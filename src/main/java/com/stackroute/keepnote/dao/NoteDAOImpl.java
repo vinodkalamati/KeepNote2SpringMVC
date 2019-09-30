@@ -2,9 +2,15 @@ package com.stackroute.keepnote.dao;
 
 import java.util.List;
 
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import com.stackroute.keepnote.model.Note;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
 
 /*
  * This class is implementing the NoteDAO interface. This class has to be annotated with @Repository
@@ -15,8 +21,12 @@ import com.stackroute.keepnote.model.Note;
  * 					transaction. The database transaction happens inside the scope of a persistence 
  * 					context.  
  * */
-
+@Repository
+@Transactional
 public class NoteDAOImpl implements NoteDAO {
+
+	@Autowired
+	SessionFactory sessionFactory;
 
 	/*
 	 * Autowiring should be implemented for the SessionFactory.
@@ -24,6 +34,7 @@ public class NoteDAOImpl implements NoteDAO {
 
 	public NoteDAOImpl(SessionFactory sessionFactory) {
 
+		this.sessionFactory=sessionFactory;
 	}
 
 	/*
@@ -31,7 +42,10 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 
 	public boolean saveNote(Note note) {
-		return false;
+		Session session=sessionFactory.getCurrentSession();
+		session.save(note);
+		session.flush();
+		return true;
 
 	}
 
@@ -40,8 +54,14 @@ public class NoteDAOImpl implements NoteDAO {
 	 */
 
 	public boolean deleteNote(int noteId) {
-		return false;
-
+		Session session=sessionFactory.getCurrentSession();
+		String query="from Note where noteId=:id";
+		Query query1=session.createQuery(query);
+		query1.setParameter("id",noteId);
+		Note note = (Note) query1.uniqueResult();
+		session.delete(note);
+		session.flush();
+		return true;
 	}
 
 	/*
@@ -49,7 +69,11 @@ public class NoteDAOImpl implements NoteDAO {
 	 * order(showing latest note first)
 	 */
 	public List<Note> getAllNotes() {
-		return null;
+		Session session=sessionFactory.getCurrentSession();
+		String query="from Note";
+		Query query1=session.createQuery(query);
+		List<Note> notes=query1.getResultList();
+		return notes;
 
 	}
 
@@ -57,14 +81,24 @@ public class NoteDAOImpl implements NoteDAO {
 	 * retrieve specific note from the database(note) table
 	 */
 	public Note getNoteById(int noteId) {
-		return null;
+		Session session=sessionFactory.getCurrentSession();
+		String query="from Note where noteId=:id";
+		Query query1=session.createQuery(query);
+		query1.setParameter("id",noteId);
+		Note note = (Note) query1.uniqueResult();
+		session.flush();
+		return note;
+
 
 	}
 
 	/* Update existing note */
 
 	public boolean UpdateNote(Note note) {
-		return false;
+		Session session=sessionFactory.getCurrentSession();
+		session.update(note);
+		session.flush();
+		return true;
 
 	}
 

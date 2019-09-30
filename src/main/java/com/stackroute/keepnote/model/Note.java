@@ -1,5 +1,7 @@
 package com.stackroute.keepnote.model;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 /*
@@ -8,54 +10,89 @@ import java.time.LocalDateTime;
  * any Java objects annotated with the @Entity annotation. If it finds any, then it will begin the 
  * process of looking through that particular Java object to recreate it as a table in your database.
  */
+@Entity
 
 public class Note {
+	@Id
+	int noteId;
+	String noteTitle;
+	String noteContent;
+	String noteStatus;
+	LocalDateTime createdAt;
+
+	public Note(int noteId, String noteTitle, String noteContent, String noteStatus, LocalDateTime createdAt) {
+		this.noteId = noteId;
+		this.noteTitle = noteTitle;
+		this.noteContent = noteContent;
+		this.noteStatus = noteStatus;
+		this.createdAt = createdAt;
+	}
+
+
+	/*
+	 * This class should have five fields (noteId, noteTitle, noteContent,
+	 * noteStatus and createdAt). This class should also contain the getters and
+	 * setters for the fields. The value of createdAt should not be accepted from
+	 * the user but should be always initialized with the system date
+	 */
 
 	public Note() {
-
 	}
 
-	public Note(int i, String string, String string2, String string3, LocalDateTime localDate) {
-	}
+	/* All the getters/setters definition should be implemented here */
 
 	public int getNoteId() {
+		return noteId;
 
-		return 0;
+	}
+
+	public void setNoteId(int intid) {
+		this.noteId=intid;
 	}
 
 	public String getNoteTitle() {
+		return noteTitle;
+	}
 
-		return null;
+	public void setNoteTitle(String string) {
+		this.noteTitle=string;
 	}
 
 	public String getNoteContent() {
+		return noteContent;
+	}
 
-		return null;
+	public void setNoteContent(String string) {
+		this.noteContent=string;
 	}
 
 	public String getNoteStatus() {
-
-		return null;
+		return noteStatus;
 	}
 
-	public void setNoteId(int parseInt) {
-
+	public void setNoteStatus(String string) {
+		this.noteStatus=string;
 	}
 
-	public void setNoteTitle(String parameter) {
-
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setNoteContent(String parameter) {
-
+	public void setCreatedAt(LocalDateTime localdatetime) {
+		this.createdAt=localdatetime;
 	}
 
-	public void setNoteStatus(String parameter) {
+	/* Override the toString() method */
 
-	}
-
-	public void setCreatedAt(LocalDateTime now) {
-
+	@Override
+	public String toString() {
+		return "Note{" +
+				"noteId=" + noteId +
+				", noteTitle='" + noteTitle + '\'' +
+				", noteContent='" + noteContent + '\'' +
+				", noteStatus='" + noteStatus + '\'' +
+				", createdAt=" + createdAt +
+				'}';
 	}
 
 }
